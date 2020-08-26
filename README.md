@@ -19,7 +19,7 @@ docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/ho
 
 You are inside the container: `$PWD/data` has been mapped to `/home/ilc/data` **inside** the container. In addition, we need to do 
 
-````bash
+```bash
 1. source init_env.sh 
 2. cd LCIO; source setup.sh; cd .. 
 3. source build/bin/thisroot.sh
