@@ -1,0 +1,8 @@
+scikit-learn 
+uproot 
+matplotlib 
+pandas
+notebook
+metakernel
+scipy
+h5py

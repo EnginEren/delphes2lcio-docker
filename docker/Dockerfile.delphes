@@ -1,0 +1,53 @@
+from engineren/prebuild-root
+
+
+SHELL ["/bin/bash", "-c"]
+
+ENV HOME /home/ilc
+WORKDIR ${HOME}
+
+
+## Delphes installation 
+RUN source /home/ilc/build/bin/thisroot.sh  \
+    && wget http://cp3.irmp.ucl.ac.be/downloads/Delphes-3.4.2.tar.gz \
+    && tar -zxf Delphes-3.4.2.tar.gz \  
+    && cd Delphes-3.4.2 \
+    && make 
+
+
+## Delphes-to-lcio tool
+
+WORKDIR ${HOME}
+
+ENV DELPHES_DIR /home/ilc/Delphes-3.4.2
+ENV LCIO /home/ilc/LCIO
+
+
+RUN svn co https://github.com/iLCSoft/LCIO/trunk/examples/cpp/delphes2lcio 
+COPY CMakeLists.txt ${HOME}/delphes2lcio/
+
+RUN source /home/ilc/build/bin/thisroot.sh  \
+  && cd delphes2lcio \
+  && mkdir build \
+  && cd build \
+  && cmake -D LCIO_DIR=$LCIO .. \
+  && make -j 4 install 
+  
+
+COPY requirements.txt requirements.txt 
+RUN pip install --upgrade pip \
+    && pip install --upgrade --no-cache-dir -r requirements.txt  \
+    && rm requirements.txt
+
+
+RUN echo "#!/bin/bash" >> $HOME/init_env.sh \
+ && echo "export DELPHES_DIR=/home/ilc/Delphes-3.4.2" >> $HOME/init_env.sh \
+ && echo "export LCIO=/home/ilc/LCIO" >> $HOME/init_env.sh \
+ && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LCIO/lib:$DELPHES_DIR" >> $HOME/init_env.sh \
+ && echo "export PATH=$PATH:/home/ilc/delphes2lcio/build/" >> $HOME/init_env.sh 
+
+
+WORKDIR ${HOME}
+
+# Start the image with BASH by default
+CMD ["/bin/bash"]

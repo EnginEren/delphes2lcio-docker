@@ -1,0 +1,102 @@
+FROM ubuntu:18.04
+
+LABEL product="iLCSoft"
+LABEL maintainer="engin.eren@desy.de"
+LABEL description="Image setting up the OS flavor, compiler version \
+and any other environement for building delphes2lcio tool"
+LABEL os="ubuntu 18.04"
+LABEL compiler="GCC 8.2"
+LABEL python="Python 3.8.0"
+
+# Perform the installation as root:
+USER root
+ENV HOME /home/ilc
+#ENV ILCSOFT /home/ilc/ilcsoft
+ENV DEBIAN_FRONTEND=noninteractive
+
+# epel-release must be installed before some other libraries
+RUN apt-get -y update && \
+    apt-get -y install \
+    	build-essential \
+	    gcc-8 g++-8 \
+	    openssl \
+	    subversion \
+	    doxygen \
+	    texlive \
+	    ghostscript \
+	    texlive-latex-extra \
+	    libssl-dev \
+	    libsqlite-dev \
+	    zlib1g-dev \
+	    wget \
+	    git \
+	    tree \
+	    libhdf5-dev \
+	    jq \
+	    libbz2-dev \
+	    libgdbm-dev \
+	    libx11-dev \
+	    libxpm-dev \
+	    libxft-dev \
+	    libxmu-dev \
+	    libxext-dev \
+	    xlibmesa-glu-dev \
+	    libglew-dev \
+	    libftgl-dev \
+	    libncurses-dev \
+	    liblzma-dev \
+	    libreadline-dev \
+	    uuid uuid-dev \
+	    libffi-dev \
+	    bash-completion \
+	    tk-dev \
+	    libmysqlclient-dev \
+	    libxml2-dev \
+	    python-dev \
+	    python-pip \
+	    freeglut3-dev \
+	    curl \
+	    emacs \
+            vim \ 
+            cmake
+
+RUN apt-get clean
+
+# Default compiler is gcc 7.4.0
+# We need to switch to gcc 8.3.0 
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 50 && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 100 && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 50 && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 100 && \
+    update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-8 50 && \
+    update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-7 100 && \
+    update-alternatives --set gcc /usr/bin/gcc-8 && \
+    update-alternatives --set g++ /usr/bin/g++-8 && \
+    update-alternatives --set cpp-bin /usr/bin/cpp-8
+
+WORKDIR ${HOME}
+
+# Install Python 3.8, compiled against the GCC version we use here (very important !)
+RUN wget http://lcgpackages.web.cern.ch/lcgpackages/tarFiles/sources/Python-3.8.0.tgz && \
+    tar xvf Python-3.8.0.tgz && \
+    cd Python-3.8.0 && \
+    ./configure --prefix=$HOME/python --enable-ipv6 --enable-shared --enable-unicode=ucs4 CXX=/usr/bin/g++ CC=/usr/bin/gcc && \
+    make install -j 10 && \
+    cd $HOME && \
+    rm -rf Python-3.8.0 Python-3.8.0.tgz
+
+ENV PATH ${HOME}/python/bin:${PATH}
+ENV LD_LIBRARY_PATH ${HOME}/python/lib:${LD_LIBRARY_PATH}
+
+
+### ROOT installation
+
+RUN git clone --branch v6-18-00-patches https://github.com/root-project/root.git \
+    && mkdir build \
+    && cd build \
+    && cmake -Dcxx17=ON ../root \ 
+    && make -j16
+
+#### 
+
+CMD ["/bin/bash"]
