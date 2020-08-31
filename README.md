@@ -8,7 +8,7 @@ This repository provides an alternative way of using [`delphes2lcio`](https://gi
 Before we start: 
 
 1. Please download the input file from [`here`](https://syncandshare.desy.de/index.php/s/63j6EDZH6e9Ec8w)
-2. Put this file into `data` folder.
+2. Create `data` folder and put this file there
 3. Download docker image: `docker pull ilcsoft/delphes2lcio-v1`. This might take time. However, this is something we do only *once*
 
 Now we are ready to launch a *container*:
@@ -17,7 +17,7 @@ Now we are ready to launch a *container*:
 docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data --rm -it --user $(id -u) ilcsoft/delphes2lcio-v1 bash
 ```
 
-You are inside the container: `$PWD/data` has been mapped to `/home/ilc/data` **inside** the container. In addition, we need to do 
+You are inside the container. Be aware that `$PWD/data` has been mapped to `/home/ilc/data` **inside** the container. In addition, we need to do 
 
 ```bash
 source init_env.sh 
