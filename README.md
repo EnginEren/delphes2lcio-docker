@@ -1,4 +1,4 @@
-# Delphes to LCIO tool and miniDST (Linux)
+# Delphes to LCIO tool and miniDST 
 
 This repository provides an alternative way of using [`delphes2lcio`](https://github.com/iLCSoft/LCIO/tree/master/examples/cpp/delphes2lcio) via `docker`. You can easily install `docker` for various systems [`here`](https://docs.docker.com/get-docker/).
 
@@ -9,20 +9,21 @@ Before we start:
 
 1. Please download the input file from [`here`](https://syncandshare.desy.de/index.php/s/63j6EDZH6e9Ec8w)
 2. Create `data` folder and put this file there
-3. Download docker image: `docker pull ilcsoft/delphes2lcio-v1`. This might take time. However, this is something we do only *once*
+3. Download docker image: `docker pull ilcsoft/delphes2lcio-v2`. This might take time. However, this is something we do only *once*
 
 Now we are ready to launch a *container*:
 
 ```bash
+cd ~/delphes2lcio-docker
 docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data --rm -it --user $(id -u) ilcsoft/delphes2lcio-v1 bash
 ```
+
+This works for **Ubuntu**. For **MAC OSX**, you should follow instructions [`here`] ( section enabling graphics) regarding XQuarz. 
 
 You are inside the container. Be aware that `$PWD/data` has been mapped to `/home/ilc/data` **inside** the container. In addition, we need to do 
 
 ```bash
 source init_env.sh 
-cd LCIO; source setup.sh; cd .. 
-source build/bin/thisroot.sh
 export DATA=/home/ilc/data
 ```
 

@@ -1,0 +1,51 @@
+FROM rootproject/root:6.22.02-ubuntu20.04
+
+RUN apt-get update \
+  && apt-get -y install cmake \
+  && apt-get -y install git
+
+
+SHELL ["/bin/bash", "-c"]
+
+ENV HOME /home/ilc
+WORKDIR ${HOME}
+
+RUN git clone https://github.com/iLCSoft/LCIO.git \
+   && cd LCIO \
+   && git checkout v02-15-01 \ 
+   && mkdir build \
+   && cd build \
+   && source ${ROOTSYS}/bin/thisroot.sh \
+   && cmake -D BUILD_ROOTDICT=ON ..  \
+   && make -j 4 install 
+
+WORKDIR ${HOME}
+
+## Delphes installation from local (unfortunate) due to TF1.h error in ROOT 6.22
+## details : https://cp3.irmp.ucl.ac.be/projects/delphes/ticket/1449
+COPY Delphes-3.4.2 ${HOME}/Delphes-3.4.2
+RUN cd ${HOME}/Delphes-3.4.2 \
+    && make 
+
+ENV DELPHES_DIR /home/ilc/Delphes-3.4.2
+ENV LCIO /home/ilc/LCIO
+
+#SHELL ["/bin/bash", "-c"]
+
+RUN cp $LCIO/examples/cpp/delphes2lcio -r . \
+  && source ${ROOTSYS}/bin/thisroot.sh  \
+  && cd delphes2lcio \
+  && mkdir build \
+  && cd build \
+  && cmake -D LCIO_DIR=$LCIO .. \
+  && make -j 4 install 
+
+
+RUN echo "#!/bin/bash" >> $HOME/init_env.sh \
+ && echo "export DELPHES_DIR=/home/ilc/Delphes-3.4.2" >> $HOME/init_env.sh \
+ && echo "export LCIO=/home/ilc/LCIO" >> $HOME/init_env.sh \
+ && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LCIO/lib:$DELPHES_DIR" >> $HOME/init_env.sh \
+ && echo "export PATH=$PATH:/home/ilc/delphes2lcio/build/" >> $HOME/init_env.sh \
+ && echo "cd /home/ilc/LCIO; source setup.sh; cd .." >> $HOME/init_env.sh
+
+
