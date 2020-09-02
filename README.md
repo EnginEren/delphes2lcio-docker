@@ -18,7 +18,7 @@ cd ~/delphes2lcio-docker
 docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data --rm -it --user $(id -u) ilcsoft/delphes2lcio-v1 bash
 ```
 
-This works for **Ubuntu**. For **MAC OSX**, you should follow instructions [`here`] ( section enabling graphics) regarding XQuarz. 
+This works for **Ubuntu**. For **MAC OSX**, you should follow instructions [`here`](https://hub.docker.com/r/rootproject/root) ( section enabling graphics) regarding XQuarz. 
 
 You are inside the container. Be aware that `$PWD/data` has been mapped to `/home/ilc/data` **inside** the container. In addition, we need to do 
 
