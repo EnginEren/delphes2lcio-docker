@@ -15,7 +15,7 @@ Now we are ready to launch a *container*:
 
 ```bash
 cd ~/delphes2lcio-docker
-docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data --rm -it --user $(id -u) ilcsoft/delphes2lcio-v1 bash
+docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data --rm -it --user $(id -u) ilcsoft/delphes2lcio-v2 bash
 ```
 
 This works for **Ubuntu**. For **MAC OSX**, you should follow instructions [`here`](https://hub.docker.com/r/rootproject/root) ( section enabling graphics) regarding XQuarz. 
