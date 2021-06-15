@@ -69,5 +69,5 @@ Assuming that you're still in your container,
 ```bash
 cd ~/scripts
 root
-.x .x higgs_recoil.C("/home/ilc/data/<YOUR-MINI-DST-FILE-NAME", "OUTPUTNAME")
+.x higgs_recoil.C("/home/ilc/data/<YOUR-MINI-DST-FILE-NAME", "OUTPUTNAME")
 ```
