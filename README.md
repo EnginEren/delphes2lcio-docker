@@ -11,16 +11,19 @@ Before we start:
 2. Create `data` folder and put this file there
 3. Download docker image: `docker pull ilcsoft/delphes2lcio-v3`. This might take time. However, this is something we do only *once*
 
+
+```bash
+git clone https://github.com/EnginEren/delphes2lcio-docker.git
+cd ~/delphes2lcio-docker
+```
 Now we are ready to launch a *container*:
 
 ```bash
-cd ~/delphes2lcio-docker
-docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data --rm -it --user $(id -u) ilcsoft/delphes2lcio-v3 bash
+docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data -v $PWD/scripts:/home/ilc/scripts --rm -it --user $(id -u) ilcsoft/delphes2lcio-v3 bash
 ```
+For **MAC OSX Users**, you should follow instructions [`here`](https://hub.docker.com/r/rootproject/root) ( section enabling graphics) regarding XQuarz. 
 
-This works for **Ubuntu**. For **MAC OSX**, you should follow instructions [`here`](https://hub.docker.com/r/rootproject/root) ( section enabling graphics) regarding XQuarz. 
-
-You are inside the container. Be aware that `$PWD/data` has been mapped to `/home/ilc/data` **inside** the container. In addition, we need to do 
+You are inside the container. Be aware that `$PWD/data` and `$PWD/scripts` have been mapped to `/home/ilc/data` and `/home/ilc/scripts` **inside** the container. In addition, we need to do 
 
 ```bash
 source init_env.sh 
@@ -56,6 +59,15 @@ root [1] hetotpfo->Draw()
 you should see reconstructed particle energy (i.e double Higgs peak)
 
 
-## Example 2: Higgs recoil mass via mini-DST
+## Example 2: Higgs Recoil mass via mini-DST
 
+This example is about calculating the Higgs recoil mass on Higgsstrahlung events (e+e- ---> ZH) with Z->mumu. 
 
+Please open a new shell in your local and download a mini-DST file [`here`](https://desycloud.desy.de/index.php/s/5LmrjGWqziQfMe7) via your favorite browser. Then put it into `data` folder. 
+
+Assuming that you're still in your container,
+```bash
+cd ~/scripts
+root
+.x .x higgs_recoil.C("/home/ilc/data/<YOUR-MINI-DST-FILE-NAME", "OUTPUTNAME")
+```
