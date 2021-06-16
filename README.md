@@ -71,3 +71,38 @@ cd ~/scripts
 root
 .x higgs_recoil.C("/home/ilc/data/<YOUR-MINI-DST-FILE-NAME", "OUTPUTNAME")
 ```
+
+Now, let us create the same plot, but this time with the ZH signal and e+e- --->mumujj background, dominated by e+e- ---> ZZ ---> mumujj, both normalised to given values for the integrated luminosity and the beam polarisations.
+
+By default, ILC event samples are generated with 100% beam polarisation. For
+all allowed sign combinations (usually just the two opposite-sign combinations, P(e-,e+) = (-1,+1) and (+1,-1)).
+Distributions for realistic polaristaion values are then created by weighting the events - [./examples/higgs_recoil_with_bkg.C](./examples/higgs_recoil_with_bkg.C) shows you how this works.
+
+It reads four input mini-DST files:
+
+* [ee -> ZH -> mumuH, P(e-,e+) = (-1,+1)](https://desycloud.desy.de/index.php/s/5LmrjGWqziQfMe7)
+* [ee -> ZH -> mumuH, P(e-,e+) = (+1,-1)](https://desycloud.desy.de/index.php/s/3ZqPcGPELggW4bP)
+* [ee -> ZZ -> mumujj, P(e-,e+) = (-1,+1)](https://desycloud.desy.de/index.php/s/9gKznqtSGcBKBWY)
+* [ee -> ZZ -> mumujj, P(e-,e+) = (+1,-1)](https://desycloud.desy.de/index.php/s/3i3tj3adfMPfPaC)
+
+Once you downloaded the input files and the macro, you can type 
+```bash
+cd ~/scripts
+root
+.x higgs_recoil_bkg.C();
+```
+in your ROOT session to get the resulting plot.
+In this case with quite a lot of background, since no cuts are applied (apart from two muons being present).
+The macro optionally takes the following arguments with the following default values:
+
+```bash
+const char* DIRNAME = "./", double lumi_target=900., double epol_target=-0.8, double ppol_target=+0.3, TString outname = "recoil_plot"
+```
+
+where DIRNAME is the directory which hosts the input mini-DST files.
+
+# Now it is your turn
+Try to improve the signal-to-background ratio by applying a cut on the sum of the b-likeliness values of the two jets.
+For this, read in the ```Refined2Jets``` collection, check that it is there and contains 2 jets, and then get the b-likeliness values (MVA output between 0 and 1).
+You find an example of how to access jets and b-tag information in [./examples/jet_btag.C](./examples/jet_btag.C).
+Take a look at this (of course you can also run it if you like!) and modify your ```higgs_recoil_with_bkg.C``` such that the recoil mass histograms are only filled if the sum of the two b-likeliness values > 1.
