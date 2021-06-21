@@ -50,6 +50,8 @@ root [0] .x ./fill_histos_lcio.C("/home/ilc/data/output.slcio")
 this creates an output root file with the same base name and path, i.e.
 
 ```bash
+### First quit from your previous root session 
+## root [1] .q
 root $DATA/output.root 
 root [1] hetotpfo->Draw()
 ```
