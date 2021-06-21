@@ -8,14 +8,11 @@ This repository provides an alternative way of using [`delphes2lcio`](https://gi
 Before we start: 
 
 1. Please download the input file from [`here`](https://syncandshare.desy.de/index.php/s/63j6EDZH6e9Ec8w)
-2. Create `data` folder and put this file there
-3. Download docker image: `docker pull ilcsoft/delphes2lcio-v3`. This might take time. However, this is something we do only *once*
+2. Download docker image: `docker pull ilcsoft/delphes2lcio-v3`. This might take time but this is something we do only *once*
+3. Clone the repository: `git clone https://github.com/EnginEren/delphes2lcio-docker.git`
+4. Go the our main folder (`cd ~/delphes2lcio-docker`) and creat a data folder (`mkdir data`)
+5. Put the input file you downloaded in step#1 to the `data` folder 
 
-
-```bash
-git clone https://github.com/EnginEren/delphes2lcio-docker.git
-cd ~/delphes2lcio-docker
-```
 Now we are ready to launch a *container*:
 
 ```bash
