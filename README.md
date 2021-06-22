@@ -30,14 +30,14 @@ export DATA=/home/ilc/data
 We are ready to generate `slcio` output:
 
 ```bash
-DelphesSTDHEP2LCIO $DELPHES_DIR/cards/delphes_card_ILD.tcl $DATA/output.slcio $DATA/E250-TDR_ws.Pe2e2h.Gwhizard-1_95.eR.pL.I106480.001.stdhep
+DelphesSTDHEP2LCIO $DELPHES_DIR/cards/delphes_card_ILD.tcl $DATA/E250-Pe2e2h.slcio $DATA/E250-TDR_ws.Pe2e2h.Gwhizard-1_95.eR.pL.I106480.001.stdhep
 ```
 
 This LCIO file can be analyzed like any other LCIO file with the usual tools,e.g.
 
 ```bash
-dumpevent $DATA/output.slcio 1 | less
-lcio_event_counter $DATA/output.slcio
+dumpevent $DATA/E250-Pe2e2h.slcio 1 | less
+lcio_event_counter $DATA/E250-Pe2e2h.slcio
 ```
 ### Root Macros
 Getting started with the analysis is to use ROOT macros
@@ -45,7 +45,7 @@ Getting started with the analysis is to use ROOT macros
 ```bash
 cd /home/ilc/delphes2lcio/examples
 root
-root [0] .x ./fill_histos_lcio.C("/home/ilc/data/output.slcio")
+root [0] .x ./fill_histos_lcio.C("/home/ilc/data/E250-Pe2e2h.slcio")
 ```
 this creates an output root file with the same base name and path, i.e.
 
