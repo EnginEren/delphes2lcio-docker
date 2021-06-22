@@ -10,7 +10,7 @@ Before we start:
 1. Please download the input file from [`here`](https://syncandshare.desy.de/index.php/s/63j6EDZH6e9Ec8w)
 2. Download docker image: `docker pull ilcsoft/delphes2lcio-v3`. This might take time but this is something we do only *once*
 3. Clone the repository: `git clone https://github.com/EnginEren/delphes2lcio-docker.git`
-4. Go the our main folder (`cd ~/delphes2lcio-docker`) and creat a data folder (`mkdir data`)
+4. Go the our main folder (`cd ~/delphes2lcio-docker`) and create a data folder (`mkdir data`)
 5. Put the input file you downloaded in step#1 to the `data` folder 
 
 Now we are ready to launch a *container*:
@@ -68,7 +68,7 @@ Assuming that you're still in your container,
 ```bash
 cd ~/scripts
 root
-.x higgs_recoil.C("/home/ilc/data/<YOUR-MINI-DST-FILE-NAME", "OUTPUTNAME")
+.x higgs_recoil.C("/home/ilc/data/<YOUR-MINI-DST-FILE-NAME>", "OUTPUTNAME")
 ```
 
 Now, let us create the same plot, but this time with the ZH signal and e+e- --->mumujj background, dominated by e+e- ---> ZZ ---> mumujj, both normalised to given values for the integrated luminosity and the beam polarisations.
