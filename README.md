@@ -15,10 +15,16 @@ Before we start:
 
 Now we are ready to launch a *container*:
 
+### Linux
 ```bash
 docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD/data:/home/ilc/data -v $PWD/scripts:/home/ilc/scripts --rm -it --user $(id -u) ilcsoft/delphes2lcio-v3 bash
 ```
-For **MAC OSX Users**, you should follow instructions [`here`](https://hub.docker.com/r/rootproject/root) ( section enabling graphics) regarding XQuarz. 
+### Mac OSX 
+You should follow instructions [`here`](https://hub.docker.com/r/rootproject/root) ( section enabling graphics) regarding XQuarz. 
+After following instructions, quit X11 and start a new terminal with: 
+```bash
+docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$ip:0 -v $PWD/data:/home/ilc/data -v $PWD/scripts:/home/ilc/scripts  --user $(id -u) ilcsoft/delphes2lcio-v3 bash
+```
 
 You are inside the container. Be aware that `$PWD/data` and `$PWD/scripts` have been mapped to `/home/ilc/data` and `/home/ilc/scripts` **inside** the container. In addition, we need to do 
 
@@ -88,7 +94,7 @@ Once you downloaded the input files and the macro, you can type
 ```bash
 cd ~/scripts
 root
-.x higgs_recoil_bkg.C();
+.x higgs_recoil_with_bkg.C();
 ```
 in your ROOT session to get the resulting plot.
 In this case with quite a lot of background, since no cuts are applied (apart from two muons being present).
